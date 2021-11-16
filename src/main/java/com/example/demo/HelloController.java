@@ -37,7 +37,7 @@ public class HelloController {
     private Button btnRotate;
     @FXML
     private HBox imgBox;
-
+    //test
     private String figure;
     private String figureColor = "#010101";
     private double rectX;
