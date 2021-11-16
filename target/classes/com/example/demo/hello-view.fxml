@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox alignment="BOTTOM_CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.demo.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <HBox fx:id="imgBox" maxWidth="200.0" maxHeight="200.0" alignment="CENTER"/>
+
+    <HBox>
+        <Button fx:id="btnImport" text="Import figure..." onAction="#onImportButtonClick"/>
+    </HBox>
+
+    <HBox spacing="7.0">
+        <Button fx:id="btnRotate" disable="true" text="Rotate 30°" onAction="#onRotateButtonClick"/>
+        <Button fx:id="btnMove" disable="true" text="Move random"/>
+        <Button fx:id="btnMax" disable="true" text="+" onAction="#onMaxButtonClick"/>
+        <Button fx:id="btnMin" disable="true" text="-" onAction="#onMinButtonClick"/>
+        <Button fx:id="btnArea" disable="true" text="Area" onAction="#onAreaButtonClick"/>
+    </HBox>
+
+    <Label fx:id="welcomeText" textAlignment="LEFT" wrapText="true" />
+<!--    <Label fx:id="welcomeText2" textAlignment="LEFT" wrapText="true" />-->
+</VBox>
+
