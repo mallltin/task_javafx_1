@@ -4,7 +4,7 @@ public class Ellip extends Figure {
     private double rx;
     private double ry;
 
-    public Ellip(double ellipseCX, double ellipseCY, double cx, double cy) {
+    public Ellip(double cx, double cy, double rx, double ry) {
         super(cx, cy);
         this.rx = rx;
         this.ry = ry;

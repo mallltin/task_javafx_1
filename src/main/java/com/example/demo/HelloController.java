@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.example.demo.figure.Circ;
 import com.example.demo.figure.Ellip;
+import com.example.demo.figure.Poly;
 import com.example.demo.figure.Rect;
 import com.example.demo.myFigureList.MyFigureList;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
@@ -21,6 +23,7 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.*;
 import java.io.File;
+import java.util.Arrays;
 
 public class HelloController {
     @FXML
@@ -49,6 +52,7 @@ public class HelloController {
     private double ellipseCY;
     private double ellipseRX;
     private double ellipseRY;
+    private Double[] arrayDPoints;
 
 
     @FXML
@@ -99,22 +103,22 @@ public class HelloController {
                         // вытаскиваем координаты
                         NamedNodeMap content = childSVG.item(i).getAttributes();
                         switch (childSVG.item(i).getNodeName()) {
-                            case "rect":
+                            case "rect" -> {
                                 rectX = Double.parseDouble(content.getNamedItem("x").getNodeValue());
                                 rectY = Double.parseDouble(content.getNamedItem("y").getNodeValue());
                                 welcomeText.setText(String.format("x = %s, y = %s", rectX, rectY));
                                 figure = myFigureList.get(j);
                                 drawRect();
-                                break;
-                            case "circle":
+                            }
+                            case "circle" -> {
                                 circleCX = Double.parseDouble(content.getNamedItem("cx").getNodeValue());
                                 circleCY = Double.parseDouble(content.getNamedItem("cy").getNodeValue());
                                 circleR = Double.parseDouble(content.getNamedItem("r").getNodeValue());
                                 welcomeText.setText(String.format("cx = %s, cy = %s, r = %s", circleCX, circleCY, circleR));
                                 figure = myFigureList.get(j);
                                 drawCircle();
-                                break;
-                            case "ellipse":
+                            }
+                            case "ellipse" -> {
                                 ellipseCX = Double.parseDouble(content.getNamedItem("cx").getNodeValue());
                                 ellipseCY = Double.parseDouble(content.getNamedItem("cy").getNodeValue());
                                 ellipseRX = Double.parseDouble(content.getNamedItem("rx").getNodeValue());
@@ -122,11 +126,22 @@ public class HelloController {
                                 welcomeText.setText(String.format("cx = %s, cy = %s, rx = %s, ry = %s", ellipseCX, ellipseCY, ellipseRX, ellipseRY));
                                 figure = myFigureList.get(i);
                                 drawEllipse();
-                                break;
-                            case "polygon":
+                            }
+                            case "polygon" -> {
                                 String str = content.getNamedItem("points").getNodeValue();
                                 welcomeText.setText("points = " + str);
-                                break;
+                                String points = str.trim().replaceAll(" ", ",");
+                                String[] arrayPoints = points.split(",");
+                                arrayPoints = Arrays.stream(arrayPoints).filter(e -> (e != null && e.length() > 0)).toArray(String[]::new); // убираем null в массиве
+                                arrayDPoints = new Double[arrayPoints.length];
+                                for (int q = 0; q < arrayPoints.length; q++) {
+                                    if (arrayPoints[q] != null) {
+                                        arrayDPoints[q] = Double.parseDouble(String.valueOf(arrayPoints[q]));
+                                    }
+                                }
+                                figure = myFigureList.get(i);
+                                drawPolygon();
+                            }
                         }
                     }
                 }
@@ -193,6 +208,13 @@ public class HelloController {
             imgBox.getChildren().clear();
             drawEllipse();
             welcomeText.setText(String.format("cx = %s, cy = %s, rx = %s, ry = %s", ellipseCX, ellipseCY, ellipseRX, ellipseRY));
+        } else if (figure.equals("polygon")) {
+            Poly poly = new Poly(arrayDPoints);
+            poly.max();
+            arrayDPoints = poly.getArray();
+            imgBox.getChildren().clear();
+            drawPolygon();
+            welcomeText.setText("points = ?");
         }
     }
 
@@ -226,6 +248,12 @@ public class HelloController {
         imgBox.getChildren().addAll(ellipse);
     }
 
+    public void drawPolygon(){
+        Polygon polygon = new Polygon();
+        polygon.getPoints().addAll(arrayDPoints);
+        polygon.setFill(Color.valueOf(figureColor));
+        imgBox.getChildren().addAll(polygon);
+    }
     public void onRotateButtonClick(ActionEvent actionEvent) {
         imgBox.setRotate(30);
     }
