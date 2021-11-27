@@ -103,22 +103,22 @@ public class HelloController {
                         // вытаскиваем координаты
                         NamedNodeMap content = childSVG.item(i).getAttributes();
                         switch (childSVG.item(i).getNodeName()) {
-                            case "rect" -> {
+                            case "rect":
                                 rectX = Double.parseDouble(content.getNamedItem("x").getNodeValue());
                                 rectY = Double.parseDouble(content.getNamedItem("y").getNodeValue());
                                 welcomeText.setText(String.format("x = %s, y = %s", rectX, rectY));
                                 figure = myFigureList.get(j);
                                 drawRect();
-                            }
-                            case "circle" -> {
+                                break;
+                            case "circle":
                                 circleCX = Double.parseDouble(content.getNamedItem("cx").getNodeValue());
                                 circleCY = Double.parseDouble(content.getNamedItem("cy").getNodeValue());
                                 circleR = Double.parseDouble(content.getNamedItem("r").getNodeValue());
                                 welcomeText.setText(String.format("cx = %s, cy = %s, r = %s", circleCX, circleCY, circleR));
                                 figure = myFigureList.get(j);
                                 drawCircle();
-                            }
-                            case "ellipse" -> {
+                                break;
+                            case "ellipse":
                                 ellipseCX = Double.parseDouble(content.getNamedItem("cx").getNodeValue());
                                 ellipseCY = Double.parseDouble(content.getNamedItem("cy").getNodeValue());
                                 ellipseRX = Double.parseDouble(content.getNamedItem("rx").getNodeValue());
@@ -126,8 +126,8 @@ public class HelloController {
                                 welcomeText.setText(String.format("cx = %s, cy = %s, rx = %s, ry = %s", ellipseCX, ellipseCY, ellipseRX, ellipseRY));
                                 figure = myFigureList.get(i);
                                 drawEllipse();
-                            }
-                            case "polygon" -> {
+                                break;
+                            case "polygon":
                                 String str = content.getNamedItem("points").getNodeValue();
                                 welcomeText.setText("points = " + str);
                                 String points = str.trim().replaceAll(" ", ",");
@@ -141,7 +141,7 @@ public class HelloController {
                                 }
                                 figure = myFigureList.get(i);
                                 drawPolygon();
-                            }
+                                break;
                         }
                     }
                 }
