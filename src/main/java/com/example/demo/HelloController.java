@@ -11,10 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Ellipse;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.*;
+import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -28,8 +26,6 @@ import java.util.Arrays;
 public class HelloController {
     @FXML
     private Label welcomeText;
-    //    @FXML
-//    private Label welcomeText2;
     @FXML
     private Button btnMax;
     @FXML
@@ -37,10 +33,7 @@ public class HelloController {
     @FXML
     private Button btnArea;
     @FXML
-    private Button btnRotate;
-    @FXML
     private HBox imgBox;
-    //test
     private String figure;
     private String figureColor = "#010101";
     private double rectX;
@@ -53,6 +46,8 @@ public class HelloController {
     private double ellipseRX;
     private double ellipseRY;
     private Double[] arrayDPoints;
+    private double oldX;
+    private double oldY;
 
 
     @FXML
@@ -70,7 +65,6 @@ public class HelloController {
         btnMax.setDisable(false);
         btnMin.setDisable(false);
         btnArea.setDisable(false);
-        btnRotate.setDisable(false);
 
         // XML DOM
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -235,17 +229,23 @@ public class HelloController {
     public void drawRect() {
         Rectangle rectangleDraw = new Rectangle(rectX, rectY, Color.valueOf(figureColor));
         imgBox.getChildren().addAll(rectangleDraw);
+        moveMouse(rectangleDraw);
+        rotateMouse(rectangleDraw);
     }
 
     public void drawCircle() {
         Circle circleDraw = new Circle(circleCX, circleCY, circleR, Color.valueOf(figureColor));
         imgBox.getChildren().addAll(circleDraw);
+        moveMouse(circleDraw);
+        rotateMouse(circleDraw);
     }
 
     public void drawEllipse() {
         Ellipse ellipse = new Ellipse(ellipseCX, ellipseCY, ellipseRX, ellipseRY);
         ellipse.setFill(Color.valueOf(figureColor));
         imgBox.getChildren().addAll(ellipse);
+        moveMouse(ellipse);
+        rotateMouse(ellipse);
     }
 
     public void drawPolygon(){
@@ -253,8 +253,28 @@ public class HelloController {
         polygon.getPoints().addAll(arrayDPoints);
         polygon.setFill(Color.valueOf(figureColor));
         imgBox.getChildren().addAll(polygon);
+        moveMouse(polygon);
+        rotateMouse(polygon);
     }
-    public void onRotateButtonClick(ActionEvent actionEvent) {
-        imgBox.setRotate(30);
+
+    // крутим колесиком мышки
+    public void rotateMouse(Shape figure){
+        Rotate rotate = new Rotate();
+        figure.setOnScroll(event -> {
+            figure.rotateProperty().bind(rotate.angleProperty());
+            rotate.setAngle(rotate.getAngle() + 30);
+        });
+    }
+
+    // перетаскивание мышкой
+    public void moveMouse(Shape figure){
+        figure.setOnMousePressed(event -> {
+            oldX = figure.getTranslateX() - event.getSceneX();
+            oldY = figure.getTranslateY() - event.getSceneY();
+        });
+        figure.setOnMouseDragged(event -> {
+            figure.setTranslateX(oldX + event.getSceneX());
+            figure.setTranslateY(oldY + event.getSceneY());
+        });
     }
 }

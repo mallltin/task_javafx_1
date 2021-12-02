@@ -14,19 +14,13 @@
 
     <HBox fx:id="imgBox" maxWidth="200.0" maxHeight="200.0" alignment="CENTER"/>
 
-    <HBox>
+    <HBox spacing="7.0" alignment="CENTER">
         <Button fx:id="btnImport" text="Import figure..." onAction="#onImportButtonClick"/>
-    </HBox>
-
-    <HBox spacing="7.0">
-        <Button fx:id="btnRotate" disable="true" text="Rotate 30°" onAction="#onRotateButtonClick"/>
-        <Button fx:id="btnMove" disable="true" text="Move random"/>
         <Button fx:id="btnMax" disable="true" text="+" onAction="#onMaxButtonClick"/>
         <Button fx:id="btnMin" disable="true" text="-" onAction="#onMinButtonClick"/>
         <Button fx:id="btnArea" disable="true" text="Area" onAction="#onAreaButtonClick"/>
     </HBox>
 
     <Label fx:id="welcomeText" textAlignment="LEFT" wrapText="true" />
-<!--    <Label fx:id="welcomeText2" textAlignment="LEFT" wrapText="true" />-->
 </VBox>
 
